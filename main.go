@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
 	"log"
 	"os"
@@ -13,6 +14,10 @@ import (
 var Lines []string
 var Lines2 []string
 var Lines3 []string
+var TempSlice []string
+
+//go:embed mimetype.txt
+var local embed.FS
 
 func main() {
 
@@ -22,17 +27,10 @@ func main() {
 	}
 	defer file.Close()
 
-	mimetypeFile, err := os.Open("mimetype.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer mimetypeFile.Close()
-
-	mimetypeScanner := bufio.NewScanner(mimetypeFile)
+	TempSlice = embedread("mimetype.txt")
 	mimetypeLines := make(map[string]bool)
-	for mimetypeScanner.Scan() {
-		line := mimetypeScanner.Text()
-		mimetypeLines[line] = true
+	for _, v1 := range TempSlice {
+		mimetypeLines[v1] = true
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -118,5 +116,27 @@ func TodoTxt(filename string, dic []string) {
 	write.Flush()
 
 	fmt.Println("txt 格式文件已输出到: ", filePath)
+
+}
+
+func embedread(filePath string) []string {
+	var resp5 []string
+
+	f, err := local.Open(filePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		// do something with a line
+		resp5 = append(resp5, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return resp5
 
 }
