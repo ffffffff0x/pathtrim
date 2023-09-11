@@ -2,6 +2,19 @@
 
 过滤path路径
 
+## 使用
+
+```
+./pathtrim
+
+# 自动读取 input.txt
+# 删除 output.txt
+# 删除 output2.txt  (第三方链接)
+# 删除 output3.txt  (可能需要人工确认的path)
+```
+
+## rule
+
 1. 提取第三方路径
 
 以 http:// 等协议开头的行
