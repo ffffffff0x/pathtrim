@@ -1,0 +1,4 @@
+push.sh
+.idea
+*.txt
+dist/
